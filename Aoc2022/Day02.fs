@@ -35,9 +35,12 @@ let outcomeScore outcome =
 
 let readPlay s =
     match s with
-    | "A" | "X" -> Rock
-    | "B" | "Y" -> Paper
-    | "C" | "Z" -> Scissors
+    | "A"
+    | "X" -> Rock
+    | "B"
+    | "Y" -> Paper
+    | "C"
+    | "Z" -> Scissors
     | _ -> invalidArg s "Expected one of A,B,C,X,Y,Z"
 
 let readOutcome s =
@@ -47,19 +50,18 @@ let readOutcome s =
     | "Z" -> Win
     | _ -> invalidArg s "Expected one of X,Y,Z"
 
-let pairFromLine (s:string) =
-    match s.Split " "
-          |> Seq.take 2
-          |> Seq.toArray
-        with
+let pairFromLine (s: string) =
+    match s.Split " " |> Seq.take 2 |> Seq.toArray with
     | [| a; b |] -> a, b
     | _ -> invalidArg s "Expected two things"
 
-let readInstruction1 = pairFromLine >> (fun (o, m)
-                                          -> readPlay o, readPlay m)
+let readInstruction1 =
+    pairFromLine
+    >> (fun (o, m) -> readPlay o, readPlay m)
 
-let readInstruction2 = pairFromLine >> (fun (opp, out)
-                                          -> readPlay opp, readOutcome out)
+let readInstruction2 =
+    pairFromLine
+    >> (fun (opp, out) -> readPlay opp, readOutcome out)
 
 let selectPlay1 (opponentPlay, myPlay) =
     outcomes
@@ -68,8 +70,7 @@ let selectPlay1 (opponentPlay, myPlay) =
 
 let selectPlay2 (opponentPlay, desiredOutcome) =
     outcomes
-    |> Seq.filter (fun (op, _, outcome)
-                    -> op = opponentPlay && outcome = desiredOutcome)
+    |> Seq.filter (fun (op, _, outcome) -> op = opponentPlay && outcome = desiredOutcome)
     |> Seq.head
 
 let roundScore (_, myPlay, outcome) =
