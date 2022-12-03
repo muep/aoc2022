@@ -5,11 +5,11 @@ let priorities =
 
 let priority (a: char) = 1 + priorities.IndexOf a
 
-let splitMiddle (s:string) =
+let splitMiddle (s: string) =
     let ln = s.Length
-    [| s.[.. ln / 2 - 1]; s.[ln / 2 ..]|]
+    [| s[.. ln / 2 - 1]; s[ln / 2 ..] |]
 
-let commonItem (sacks: string[]) =
+let commonItem (sacks: string []) =
     sacks
     |> Seq.map Set.ofSeq
     |> Seq.reduce Set.intersect
