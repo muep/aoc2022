@@ -59,15 +59,6 @@ let readMove (s: string) =
     | [| "move"; cnt; "from"; src; "to"; dst |] -> (System.Int32.Parse cnt, readIndex src, readIndex dst)
     | _ -> invalidArg ("\"" + s + "\"") "bad move"
 
-let part (partMoves: char list array * seq<int * int * int> -> char list array) path =
-    System.IO.File.ReadAllLines path
-    |> partition
-    |> (fun (crates, nums, moves) -> (initStacks nums crates), (Seq.map readMove moves))
-    |> partMoves
-    |> Seq.map List.head
-    |> (Array.ofSeq >> System.String.Concat)
-    |> System.Console.WriteLine
-
 let part1Moves (stacks, moves) =
     moves
     |> (Seq.map (fun (cnt, src, dst) -> seq { for i in 1..cnt -> (src, dst) })
@@ -80,4 +71,26 @@ let part1Moves (stacks, moves) =
             stacks)
         stacks
 
+let part2Moves (stacks, moves) =
+    moves
+    |> Seq.fold
+        (fun (stacks: char list array) (cnt, src, dst) ->
+            let moved = List.take cnt stacks[src]
+            stacks[dst] <- List.append moved stacks[dst]
+            stacks[src] <- List.skip cnt stacks[src]
+            stacks)
+        stacks
+
+let part (partMoves: char list array * seq<int * int * int> -> char list array) path =
+    System.IO.File.ReadAllLines path
+    |> partition
+    |> (fun (crates, nums, moves) -> (initStacks nums crates), (Seq.map readMove moves))
+    |> partMoves
+    |> Seq.map List.head
+    |> (Array.ofSeq >> System.String.Concat)
+    |> System.Console.WriteLine
+
 let part1 = part part1Moves
+
+
+let part2 = part part2Moves
