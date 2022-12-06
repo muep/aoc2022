@@ -82,7 +82,7 @@ let part2Moves (stacks, moves) =
         stacks
 
 let part (partMoves: char list array * seq<int * int * int> -> char list array) path =
-    System.IO.File.ReadAllLines path
+    System.IO.File.ReadLines path
     |> partition
     |> (fun (crates, nums, moves) -> (initStacks nums crates), (Seq.map readMove moves))
     |> partMoves
