@@ -55,26 +55,29 @@ let initStacks (nums: string) crates =
 let readIndex s = (System.Int32.Parse s) - 1
 
 let readMove (s: string) =
-    let cnt, src, dst =
-        match s.Split " " with
-        | [| "move"; cnt; "from"; src; "to"; dst |] -> (System.Int32.Parse cnt, readIndex src, readIndex dst)
-        | _ -> invalidArg ("\"" + s + "\"") "bad move"
+    match s.Split " " with
+    | [| "move"; cnt; "from"; src; "to"; dst |] -> (System.Int32.Parse cnt, readIndex src, readIndex dst)
+    | _ -> invalidArg ("\"" + s + "\"") "bad move"
 
-    seq { for i in 1..cnt -> (src, dst) }
-
-let part1 path =
+let part (partMoves: char list array * seq<int * int * int> -> char list array) path =
     System.IO.File.ReadAllLines path
     |> partition
-    |> (fun (crates, nums, moves) -> (initStacks nums crates), (Seq.map readMove moves) |> Seq.concat)
-    |> (fun (stacks, moves) ->
-        moves
-        |> Seq.fold
-            (fun (stacks: char list array) (src, dst) ->
-                let item = List.head stacks[src]
-                stacks[dst] <- item :: stacks[dst]
-                stacks[src] <- List.tail stacks[src]
-                stacks)
-            stacks)
+    |> (fun (crates, nums, moves) -> (initStacks nums crates), (Seq.map readMove moves))
+    |> partMoves
     |> Seq.map List.head
     |> (Array.ofSeq >> System.String.Concat)
     |> System.Console.WriteLine
+
+let part1Moves (stacks, moves) =
+    moves
+    |> (Seq.map (fun (cnt, src, dst) -> seq { for i in 1..cnt -> (src, dst) })
+        >> Seq.concat)
+    |> Seq.fold
+        (fun (stacks: char list array) (src, dst) ->
+            let item = List.head stacks[src]
+            stacks[dst] <- item :: stacks[dst]
+            stacks[src] <- List.tail stacks[src]
+            stacks)
+        stacks
+
+let part1 = part part1Moves
