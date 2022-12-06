@@ -30,6 +30,8 @@ let runAll () =
     Aoc2022.Day04.part1 "input/day-04.ex"
     Aoc2022.Day04.part1 "input/day-04.txt"
     Aoc2022.Day04.part2 "input/day-04.txt"
+    Aoc2022.Day05.part1 "input/day-05.ex"
+    Aoc2022.Day05.part1 "input/day-05.txt"
 
 let runDay inputPath day =
     solutions.[day].part1 inputPath
@@ -39,9 +41,18 @@ let runDay inputPath day =
 let runDayDefault day =
     runDay $"input/day-%02d{day}.txt" day
 
+let usageText = """
+usage:
+    Aoc2022          this help
+    Aoc2022 all      run all the implemented solutions
+    Aoc2022 day      run both parts of a daily solution with default input
+    Aoc2022 day path run both parts of a daily solution with given input
+"""
+
 [<EntryPoint>]
 let main args =
     match args with
+    | [||] -> System.Console.WriteLine usageText
     | [| "all" |] -> runAll ()
     | [| "day"; num |] -> num |> System.Int32.Parse |> runDayDefault
     | [| "day"; num; inputPath |] -> num |> System.Int32.Parse |> runDay inputPath
