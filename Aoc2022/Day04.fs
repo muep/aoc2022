@@ -19,7 +19,7 @@ let part theAskedForThing path =
     |> Seq.map readAssignment
     |> Seq.filter theAskedForThing
     |> Seq.length
-    |> printfn "%d"
+    |> System.Console.WriteLine
 
 let part1 =
     part (fun (r0, r1) -> (Set.isSubset r0 r1) || (Set.isSubset r1 r0))

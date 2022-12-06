@@ -16,7 +16,7 @@ let part1 path =
     |> splitByEmpty
     |> Seq.map ((Seq.map System.Int32.Parse) >> Seq.sum)
     |> Seq.max
-    |> printfn "%d"
+    |> System.Console.WriteLine
 
 let part2 path =
     System.IO.File.ReadLines path
@@ -25,4 +25,4 @@ let part2 path =
     |> Seq.sortDescending
     |> Seq.take 3
     |> Seq.sum
-    |> printfn "%d"
+    |> System.Console.WriteLine

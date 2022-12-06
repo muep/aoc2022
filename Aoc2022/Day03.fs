@@ -21,7 +21,7 @@ let part1 path =
     |> Seq.map commonItem
     |> Seq.map priority
     |> Seq.sum
-    |> printfn "%d"
+    |> System.Console.WriteLine
 
 let part2 path =
     System.IO.File.ReadLines path
@@ -29,4 +29,4 @@ let part2 path =
     |> Seq.map commonItem
     |> Seq.map priority
     |> Seq.sum
-    |> printfn "%d"
+    |> System.Console.WriteLine

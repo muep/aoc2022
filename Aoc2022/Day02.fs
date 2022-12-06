@@ -82,7 +82,7 @@ let part1 path =
     |> Seq.map selectPlay1
     |> Seq.map roundScore
     |> Seq.sum
-    |> printfn "%d"
+    |> System.Console.WriteLine
 
 let part2 path =
     System.IO.File.ReadLines path
@@ -90,4 +90,4 @@ let part2 path =
     |> Seq.map selectPlay2
     |> Seq.map roundScore
     |> Seq.sum
-    |> printfn "%d"
+    |> System.Console.WriteLine
