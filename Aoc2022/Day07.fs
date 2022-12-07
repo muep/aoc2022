@@ -29,32 +29,25 @@ let lsFileSize (lsOut: string) =
 
 type State =
     { cwd: string list
-      totalSize: int
       dirsizes: Map<string list, int> }
 
 let getSize (sizes: Map<string list, int>) (dir: string list) =
     match sizes.TryFind(dir) with
-    | Some (a) -> a
+    | Some a -> a
     | None -> 0
 
 let incrementSizes (cwd: string list) (cwsize: int) (dirsizes: Map<string list, int>) =
     cwd
+    |> List.rev
     |> Seq.fold (fun subs d -> (d :: (List.head subs)) :: subs) [ [] ]
     |> Seq.fold (fun (dszs: Map<string list, int>) d -> dszs.Add(d, cwsize + (getSize dszs d))) dirsizes
 
 let updateState state proc =
     match proc.cmd with
-    | Cd ("/") -> { state with cwd = [] }
-    | Cd (where) -> { state with cwd = where :: state.cwd }
+    | Cd "/" -> { state with cwd = [] }
+    | Cd where -> { state with cwd = where :: state.cwd }
     | Up -> { state with cwd = List.tail state.cwd }
-    | Ls ->
-        { state with
-            totalSize = state.totalSize + (lsFileSize proc.output)
-            dirsizes = incrementSizes state.cwd (lsFileSize proc.output) state.dirsizes }
-
-let showCmds cmds =
-    for cmd in cmds do
-        printfn "%A" cmd
+    | Ls -> { state with dirsizes = incrementSizes state.cwd (lsFileSize proc.output) state.dirsizes }
 
 let trimEnds (s: string) = s.Trim()
 
@@ -66,9 +59,8 @@ let part1 path =
     |> Seq.map trimEnds
     |> Seq.filter notEmpty
     |> Seq.map readProcess
-    |> Seq.fold
-        updateState
-        { cwd = []
-          totalSize = 0
-          dirsizes = Map.empty }
+    |> Seq.fold updateState { cwd = []; dirsizes = Map.empty }
+    |> (fun state -> state.dirsizes)
+    |> Map.filter (fun _ sz -> sz <= 100000)
+    |> Map.fold (fun acc _ sz -> acc + sz) 0
     |> System.Console.WriteLine
