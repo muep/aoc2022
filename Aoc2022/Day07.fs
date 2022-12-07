@@ -32,25 +32,25 @@ type State =
       totalSize: int
       dirsizes: Map<string list, int> }
 
-let getSize (sizes: Map<string list,int>) (dir:string list) =
+let getSize (sizes: Map<string list, int>) (dir: string list) =
     match sizes.TryFind(dir) with
-    | Some(a) -> a
+    | Some (a) -> a
     | None -> 0
 
 let incrementSizes (cwd: string list) (cwsize: int) (dirsizes: Map<string list, int>) =
     cwd
     |> Seq.fold (fun subs d -> (d :: (List.head subs)) :: subs) [ [] ]
-    |> Seq.fold (fun (dszs: Map<string list, int>) d -> dszs.Add(d, cwsize + (getSize dszs d)))
-                dirsizes
+    |> Seq.fold (fun (dszs: Map<string list, int>) d -> dszs.Add(d, cwsize + (getSize dszs d))) dirsizes
 
 let updateState state proc =
     match proc.cmd with
     | Cd ("/") -> { state with cwd = [] }
     | Cd (where) -> { state with cwd = where :: state.cwd }
     | Up -> { state with cwd = List.tail state.cwd }
-    | Ls -> { state with
-               totalSize = state.totalSize + (lsFileSize proc.output)
-               dirsizes = incrementSizes state.cwd (lsFileSize proc.output) state.dirsizes}
+    | Ls ->
+        { state with
+            totalSize = state.totalSize + (lsFileSize proc.output)
+            dirsizes = incrementSizes state.cwd (lsFileSize proc.output) state.dirsizes }
 
 let showCmds cmds =
     for cmd in cmds do
