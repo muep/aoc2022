@@ -20,7 +20,10 @@ let solutions =
          part2 = Aoc2022.Day05.part2 })
       (6,
        { part1 = Aoc2022.Day06.part1
-         part2 = Aoc2022.Day06.part2 }) ]
+         part2 = Aoc2022.Day06.part2 })
+      (7,
+       { part1 = Aoc2022.Day07.part1
+         part2 = Aoc2022.Day07.part2 }) ]
     |> Map.ofList
 
 let runAll () =
@@ -58,10 +61,10 @@ let runDayDefault day =
 
 let usageText = """
 usage:
-    Aoc2022          this help
-    Aoc2022 all      run all the implemented solutions
-    Aoc2022 day      run both parts of a daily solution with default input
-    Aoc2022 day path run both parts of a daily solution with given input
+    Aoc2022                this help
+    Aoc2022 all            run all the implemented solutions
+    Aoc2022 day <N>        run both parts of a daily solution with default input
+    Aoc2022 day <N> <path> run both parts of a daily solution with given input
 """
 
 [<EntryPoint>]
