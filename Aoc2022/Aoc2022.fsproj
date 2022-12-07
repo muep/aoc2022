@@ -12,6 +12,7 @@
         <Compile Include="Day04.fs" />
         <Compile Include="Day05.fs" />
         <Compile Include="Day06.fs" />
+        <Compile Include="Day07.fs" />
         <Compile Include="Program.fs" />
         <Content Include="input\day-01.ex" />
         <Content Include="input\day-01.txt" />
@@ -25,6 +26,8 @@
         <Content Include="input\day-05.txt" />
         <Content Include="input\day-06.ex3" />
         <Content Include="input\day-06.txt" />
+        <Content Include="input\day-07.ex" />
+        <Content Include="input\day-07.txt" />
     </ItemGroup>
 
 </Project>
