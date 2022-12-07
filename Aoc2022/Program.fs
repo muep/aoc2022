@@ -45,6 +45,8 @@ let runAll () =
     Aoc2022.Day06.part2 "input/day-06.txt"
     Aoc2022.Day07.part1 "input/day-07.ex"
     Aoc2022.Day07.part1 "input/day-07.txt"
+    Aoc2022.Day07.part2 "input/day-07.ex"
+    Aoc2022.Day07.part2 "input/day-07.txt"
 
 let runDay inputPath day =
     solutions.[day].part1 inputPath
