@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Aoc2022", "Aoc2022\Aoc2022.fsproj", "{3A10307F-F25B-421A-9F56-080057F38EAE}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Aoc2022.Tests", "Aoc2022.Tests\Aoc2022.Tests.fsproj", "{60FB79EB-ACCF-4A11-A9C8-ECD92C1A22B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{3A10307F-F25B-421A-9F56-080057F38EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A10307F-F25B-421A-9F56-080057F38EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A10307F-F25B-421A-9F56-080057F38EAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60FB79EB-ACCF-4A11-A9C8-ECD92C1A22B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60FB79EB-ACCF-4A11-A9C8-ECD92C1A22B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60FB79EB-ACCF-4A11-A9C8-ECD92C1A22B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60FB79EB-ACCF-4A11-A9C8-ECD92C1A22B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

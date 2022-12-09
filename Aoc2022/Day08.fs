@@ -99,10 +99,12 @@ let scenicScore fmap (row, col) =
 
     sideLow * sideHigh * lenLow * lenHigh
 
-let part2 path =
+let part2Result path =
     let fmap = load path
 
     candidates fmap
     |> Seq.map (scenicScore fmap)
     |> Seq.max
-    |> printfn "%A"
+
+let part2 path =
+    part2Result path |> System.Console.WriteLine
