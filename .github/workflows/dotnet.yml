@@ -19,8 +19,10 @@ jobs:
         dotnet-version: 7.0.x
     - name: Verify formatting
       run: dotnet format --verify-no-changes
+    - name: Run tests
+      run: dotnet test
     - name: Build
-      run: dotnet publish -r linux-x64  -p:PublishAOT=true -p:AssemblyName=aoc2022 --configuration Release
+      run: dotnet publish Aoc2022 -r linux-x64  -p:PublishAOT=true -p:AssemblyName=aoc2022 --configuration Release
     - name: Upload the executable as artifact
       uses: actions/upload-artifact@v3.1.0
       with:
