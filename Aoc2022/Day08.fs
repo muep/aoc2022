@@ -48,4 +48,46 @@ let part1 path =
     |> Seq.length
     |> System.Console.WriteLine
 
-let part2 path = ()
+let isBetween minv maxv v = minv <= v && v <= maxv
+
+let scenicScore fmap (row, col) =
+    let lowerOrEqualToHere pos =
+        (height fmap pos) <= (height fmap (row, col))
+
+    let maxHeight = height fmap (row, col)
+
+    let countVisible (minHeight, cnt) pos =
+        let hht = height fmap pos
+
+        if minHeight <=  (min maxHeight hht) then
+            (hht, cnt + 1)
+        else
+            (minHeight, cnt)
+
+    let startState = (0uy, 0)
+
+    let sideLow =
+        sideways row 0 (col - 1) |> Seq.rev |> Seq.fold countVisible startState |> snd
+
+    let sideHigh =
+        sideways row (col + 1) (fmap.width - 1)
+        |> Seq.fold countVisible startState
+        |> snd
+
+    let lenLow =
+        lengthwise 0 (row - 1) col |> Seq.rev |> Seq.fold countVisible startState |> snd
+
+    let lenHigh =
+        lengthwise (row + 1) (fmap.length - 1) col
+        |> Seq.fold countVisible startState
+        |> snd
+
+    sideLow * sideHigh * lenLow * lenHigh
+
+let part2 path =
+    let fmap = load path
+
+    candidates fmap
+    |> Seq.map (scenicScore fmap)
+    |> Seq.max
+    |> System.Console.WriteLine
