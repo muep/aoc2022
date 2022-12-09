@@ -11,10 +11,15 @@ let load path =
     |> (fun (width, buf) ->
         { width = width
           length = buf.Length / width
-          heights = buf |> Seq.map (string >> System.Byte.Parse) |> Seq.toArray })
+          heights =
+            buf
+            |> Seq.map (string >> System.Byte.Parse)
+            |> Seq.toArray })
 
 let candidates fmap =
-    Seq.allPairs [ 0 .. fmap.width - 1 ] [ 0 .. fmap.length - 1 ]
+    Seq.allPairs [ 0 .. fmap.width - 1 ] [
+        0 .. fmap.length - 1
+    ]
 
 let height fmap (row, col) = fmap.heights[col + fmap.width * row]
 
@@ -28,17 +33,26 @@ let visible fmap (row, col) =
     let lowerThanHere pos =
         (height fmap pos) < (height fmap (row, col))
 
-    let sidewaysLowVisible = sideways row 0 (col - 1) |> Seq.forall lowerThanHere
+    let sidewaysLowVisible =
+        sideways row 0 (col - 1)
+        |> Seq.forall lowerThanHere
 
     let sidewaysHighVisible =
-        sideways row (col + 1) (fmap.width - 1) |> Seq.forall lowerThanHere
+        sideways row (col + 1) (fmap.width - 1)
+        |> Seq.forall lowerThanHere
 
-    let lenLowVisible = lengthwise 0 (row - 1) col |> Seq.forall lowerThanHere
+    let lenLowVisible =
+        lengthwise 0 (row - 1) col
+        |> Seq.forall lowerThanHere
 
     let lenHighVisible =
-        lengthwise (row + 1) (fmap.length - 1) col |> Seq.forall lowerThanHere
+        lengthwise (row + 1) (fmap.length - 1) col
+        |> Seq.forall lowerThanHere
 
-    sidewaysLowVisible || sidewaysHighVisible || lenLowVisible || lenHighVisible
+    sidewaysLowVisible
+    || sidewaysHighVisible
+    || lenLowVisible
+    || lenHighVisible
 
 let part1 path =
     let fmap = load path
@@ -51,36 +65,37 @@ let part1 path =
 let isBetween minv maxv v = minv <= v && v <= maxv
 
 let scenicScore fmap (row, col) =
-    let lowerOrEqualToHere pos =
-        (height fmap pos) <= (height fmap (row, col))
+    let obstructing pos =
+        (height fmap pos) >= (height fmap (row, col))
 
-    let maxHeight = height fmap (row, col)
+    let countVisible2 (count, blocked) pos =
+        match blocked, obstructing pos with
+        | true, _ -> count, blocked
+        | false, blockedHere -> (count + 1), blockedHere
 
-    let countVisible (minHeight, cnt) pos =
-        let hht = height fmap pos
-
-        if minHeight <=  (min maxHeight hht) then
-            (hht, cnt + 1)
-        else
-            (minHeight, cnt)
-
-    let startState = (0uy, 0)
+    let startState = (0, false)
 
     let sideLow =
-        sideways row 0 (col - 1) |> Seq.rev |> Seq.fold countVisible startState |> snd
+        sideways row 0 (col - 1)
+        |> Seq.rev
+        |> Seq.fold countVisible2 startState
+        |> fst
 
     let sideHigh =
         sideways row (col + 1) (fmap.width - 1)
-        |> Seq.fold countVisible startState
-        |> snd
+        |> Seq.fold countVisible2 startState
+        |> fst
 
     let lenLow =
-        lengthwise 0 (row - 1) col |> Seq.rev |> Seq.fold countVisible startState |> snd
+        lengthwise 0 (row - 1) col
+        |> Seq.rev
+        |> Seq.fold countVisible2 startState
+        |> fst
 
     let lenHigh =
         lengthwise (row + 1) (fmap.length - 1) col
-        |> Seq.fold countVisible startState
-        |> snd
+        |> Seq.fold countVisible2 startState
+        |> fst
 
     sideLow * sideHigh * lenLow * lenHigh
 
@@ -90,4 +105,4 @@ let part2 path =
     candidates fmap
     |> Seq.map (scenicScore fmap)
     |> Seq.max
-    |> System.Console.WriteLine
+    |> printfn "%A"
