@@ -18,28 +18,25 @@ let candidates fmap =
 
 let height fmap (row, col) = fmap.heights[col + fmap.width * row]
 
-let visible fmap (row, col) =
-    let heightHere = height fmap (row, col)
+let sideways row colStart colEnd =
+    Seq.map (fun col -> (row, col)) [ colStart..colEnd ]
 
-    let sidewaysLowVisible =
-        [ 0 .. col - 1 ]
-        |> Seq.filter (fun c -> col <> c)
-        |> Seq.forall (fun c -> height fmap (row, c) < heightHere)
+let lengthwise rowStart rowEnd col =
+    Seq.map (fun row -> (row, col)) [ rowStart..rowEnd ]
+
+let visible fmap (row, col) =
+    let lowerThanHere pos =
+        (height fmap pos) < (height fmap (row, col))
+
+    let sidewaysLowVisible = sideways row 0 (col - 1) |> Seq.forall lowerThanHere
 
     let sidewaysHighVisible =
-        [ col + 1 .. fmap.width - 1 ]
-        |> Seq.filter (fun c -> col <> c)
-        |> Seq.forall (fun c -> height fmap (row, c) < heightHere)
+        sideways row (col + 1) (fmap.width - 1) |> Seq.forall lowerThanHere
 
-    let lenLowVisible =
-        [ 0 .. row - 1 ]
-        |> Seq.filter (fun r -> row <> r)
-        |> Seq.forall (fun r -> height fmap (r, col) < heightHere)
+    let lenLowVisible = lengthwise 0 (row - 1) col |> Seq.forall lowerThanHere
 
     let lenHighVisible =
-        [ row + 1 .. fmap.length - 1 ]
-        |> Seq.filter (fun r -> row <> r)
-        |> Seq.forall (fun r -> height fmap (r, col) < heightHere)
+        lengthwise (row + 1) (fmap.length - 1) col |> Seq.forall lowerThanHere
 
     sidewaysLowVisible || sidewaysHighVisible || lenLowVisible || lenHighVisible
 
