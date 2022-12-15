@@ -10,6 +10,20 @@ let initialState =
       tail = (0, 0)
       tailPositions = Set.empty }
 
+let follow leader self =
+    let (leaderX, leaderY) = leader
+    let (selfX, selfY) = self
+    
+    let dx = leaderX - selfX
+    let dy = leaderY - selfY
+    
+    match abs(dx), abs(dy) with
+    | 0,0 | 0,1 | 1,0 | 1,1 -> selfX, selfY
+    | 2,0 | 2,1 -> leaderX - dx / abs(dx), leaderY
+    | 1,2 | 0,2 -> leaderX, leaderY - dy / abs(dy)
+    | 2,2 -> leaderX - dx/abs(dx), leaderY - dy/abs(dy)
+    | _ -> invalidOp "Unsupported move"
+
 let moveState
     { head = (headx, heady)
       tail = (tailx, taily)
