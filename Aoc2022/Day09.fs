@@ -50,10 +50,13 @@ let readMoveLine (line: string) =
 let stepsFrom path =
     System.IO.File.ReadLines path |> Seq.map readMoveLine |> Seq.concat
 
-let part1 path =
+let part1Result path =
     stepsFrom path
     |> Seq.fold moveState initialState
     |> (fun a -> a.tailPositions.Count)
+
+let part1 path =
+    part1Result path
     |> System.Console.WriteLine
 
 let part2 path =
