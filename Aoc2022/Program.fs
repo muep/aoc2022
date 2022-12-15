@@ -23,7 +23,10 @@ let solutions =
          part2 = Aoc2022.Day06.part2 })
       (7,
        { part1 = Aoc2022.Day07.part1
-         part2 = Aoc2022.Day07.part2 }) ]
+         part2 = Aoc2022.Day07.part2 })
+      (8,
+       { part1 = Aoc2022.Day08.part1
+         part2 = Aoc2022.Day08.part2 }) ]
     |> Map.ofList
 
 let runAll () =
@@ -50,16 +53,20 @@ let runAll () =
     Aoc2022.Day07.part1 "input/day-07.txt"
     Aoc2022.Day07.part2 "input/day-07.ex"
     Aoc2022.Day07.part2 "input/day-07.txt"
+    Aoc2022.Day08.part1 "input/day-08.ex"
+    Aoc2022.Day08.part1 "input/day-08.txt"
+    Aoc2022.Day08.part2 "input/day-08.ex"
+    Aoc2022.Day08.part2 "input/day-08.txt"
 
 let runDay inputPath day =
     solutions.[day].part1 inputPath
     solutions.[day].part2 inputPath
     ()
 
-let runDayDefault day =
-    runDay $"input/day-%02d{day}.txt" day
+let runDayDefault day = runDay $"input/day-%02d{day}.txt" day
 
-let usageText = """
+let usageText =
+    """
 usage:
     Aoc2022                this help
     Aoc2022 all            run all the implemented solutions
