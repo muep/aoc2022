@@ -47,11 +47,11 @@ let readMoveLine (line: string) =
 
     Array.create cnt move
 
-let stepFrom path =
+let stepsFrom path =
     System.IO.File.ReadLines path |> Seq.map readMoveLine |> Seq.concat
 
 let part1 path =
-    stepFrom path
+    stepsFrom path
     |> Seq.fold moveState initialState
     |> (fun a -> a.tailPositions.Count)
     |> System.Console.WriteLine
