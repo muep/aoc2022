@@ -11,18 +11,22 @@ let splitByEmpty seq =
         groupId.Value)
     |> Seq.map (snd >> (Seq.filter (fun t -> 0 < t.Length)))
 
-let part1 path =
+let part1Result path =
     System.IO.File.ReadLines path
     |> splitByEmpty
     |> Seq.map ((Seq.map System.Int32.Parse) >> Seq.sum)
     |> Seq.max
-    |> System.Console.WriteLine
 
-let part2 path =
+let part2Result path =
     System.IO.File.ReadLines path
     |> splitByEmpty
     |> Seq.map ((Seq.map System.Int32.Parse) >> Seq.sum)
     |> Seq.sortDescending
     |> Seq.take 3
     |> Seq.sum
-    |> System.Console.WriteLine
+
+let part1 path =
+    path |> part1Result |> System.Console.WriteLine
+
+let part2 path =
+    path |> part2Result |> System.Console.WriteLine
