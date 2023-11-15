@@ -26,7 +26,10 @@ let solutions =
          part2 = Aoc2022.Day07.part2 })
       (8,
        { part1 = Aoc2022.Day08.part1
-         part2 = Aoc2022.Day08.part2 }) ]
+         part2 = Aoc2022.Day08.part2 })
+      (9,
+       { part1 = Aoc2022.Day09.part1
+         part2 = Aoc2022.Day09.part2 }) ]
     |> Map.ofList
 
 let runAll () =
@@ -57,6 +60,8 @@ let runAll () =
     Aoc2022.Day08.part1 "input/day-08.txt"
     Aoc2022.Day08.part2 "input/day-08.ex"
     Aoc2022.Day08.part2 "input/day-08.txt"
+    Aoc2022.Day09.part1 "input/day-09.ex"
+    Aoc2022.Day09.part1 "input/day-09.txt"
 
 let runDay inputPath day =
     solutions.[day].part1 inputPath
